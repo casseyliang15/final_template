@@ -51,6 +51,7 @@
                 {% endfor %}
             </div>
             <!-- Task: show questions and choices -->
+
             <!-- <HINT> Use Bootstrap Collapse to hide exam first, more details could be found here
             https://www.w3schools.com/bootstrap4/bootstrap_collapse.asp-->
 
@@ -64,6 +65,7 @@
             -->
 
             <!-- <HINT> If user is authenticated, show course exam with a list of question -->
+            
 
             <!-- <HINT> Each example will have many questions -->
 
@@ -97,6 +99,40 @@
 
             <!--Check here to see more details Bootstrap checkbox
              https://www.w3schools.com/bootstrap4/bootstrap_forms_inputs.asp-->
+
+
+            {% if user.is_authenticated %}
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#exam">
+                Start Exam
+                <!--this is the text. Type indicate general button. Class is for styling-->
+            </button>
+
+            <div id="exam" class="collapse">
+
+                <form id="questionform" action="{% url 'onlinecourse:submit' course.id}" method="post">
+                    <!--action specifies URL where the data in the form will be submitted to-->
+                    {% for question in course.question_set.all %}
+                        <div class="card mt-1">
+                            <div class="card-header"><h5>{{ question.question_text}}</h5></div>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {% for choice in questions.choice_set.all %}
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" name="choice_{{choice.id}}"
+                                                class="form-check-input" id="{{choice.id}}"
+                                                value="{{choice.id}}">{{ choice.choice_text }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <input class="btn btn-success btn-block" type="submit" value="Submit">
+                </form>
+
+            </div>
+            {% endif %}
     </div>
 </body>
 </html>

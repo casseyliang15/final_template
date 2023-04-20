@@ -135,7 +135,7 @@ class Question(models.Model):
     # Other fields and methods you would like to design
 class Choice(models.Model): #1 choice only
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_content = models.TextField()
+    choice_text = models.TextField()
     correct_choice = models.BooleanField()
 
 # <HINT> The submission model
